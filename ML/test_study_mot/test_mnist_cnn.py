@@ -8,7 +8,7 @@ from layers import conv_layer, max_pool_2x2, full_layer
 #current_directory = os.path.join(os.path.dirname(__file__))
 #data_directory = os.path.join(current_directory, "data")
 
-DATA_DIR = "./MNIST-data"
+DATA_DIR = "./data/MNIST-data"
 
 
 MINIBATCH_SIZE = 50
