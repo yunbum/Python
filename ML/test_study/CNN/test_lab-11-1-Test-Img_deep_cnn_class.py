@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 
 # import matplotlib.pyplot as plt
 f_path = [
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/01_bolt/bolt_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/02_gear/gear_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/03_motor/motor_txt/',
-#        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/04_screw/screw_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/05_washer/washer_txt/',
-#        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/06_warmgear/warmgear_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/07_lego/lego_txt/'
+    '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/01_bolt/bolt_txt/',
+    '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/02_gear/gear_txt/',
+    '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/03_motor/motor_txt/',
+    #        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/04_screw/screw_txt/',
+    '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/05_washer/washer_txt/',
+    #        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/06_warmgear/warmgear_txt/',
+    '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/07_lego/lego_txt/'
         ]
 
 f_name = [

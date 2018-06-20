@@ -8,14 +8,12 @@ from layers import conv_layer, max_pool_2x2, full_layer
 #current_directory = os.path.join(os.path.dirname(__file__))
 #data_directory = os.path.join(current_directory, "data")
 
-DATA_DIR = "./data/MNIST-data"
-
+DATA_DIR = "/Users/ybbaek/PycharmProjects/Datasets/MNIST-data"
 
 MINIBATCH_SIZE = 50
 STEPS = 5000
 
 mnist = input_data.read_data_sets(DATA_DIR, one_hot=True)
-
 
 x = tf.placeholder(tf.float32, shape=[None, 784])
 y_ = tf.placeholder(tf.float32, shape=[None, 10])

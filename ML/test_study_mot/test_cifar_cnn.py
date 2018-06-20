@@ -41,7 +41,20 @@ class CifaLoader(object):
         self.labels = None
 
     def load(self):
-        data =
+        data = [unpickle(f) for f in self._source]
+        images = np.vstack([d["data"] for d in data])
+        n = len(images)
+        self.images = images.reshape(n, 3, 32, 32).transpose(0, 2, 3, 1)\
+            .astype(flaot) / 255
+        self.labels = one_hot(np.hstack([d["labels"] for d in data]), 10)
+        return self
+
+
+
+
+
+
+    
 
 
 

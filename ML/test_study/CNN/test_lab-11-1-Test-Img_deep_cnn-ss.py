@@ -4,15 +4,14 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-# import matplotlib.pyplot as plt
 f_path = [
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/01_bolt/bolt_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/02_gear/gear_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/03_motor/motor_txt/',
-#        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/04_screw/screw_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/05_washer/washer_txt/',
-#        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/06_warmgear/warmgear_txt/',
-        'C:/Users/NB-SH-001/Documents/Python Scripts/data/img_small/07_lego/lego_txt/'
+        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/01_bolt/bolt_txt/',
+        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/02_gear/gear_txt/',
+        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/03_motor/motor_txt/',
+#        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/04_screw/screw_txt/',
+        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/05_washer/washer_txt/',
+#        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/06_warmgear/warmgear_txt/',
+        '/Users/ybbaek/PycharmProjects/Datasets/data_img/img_small/07_lego/lego_txt/'
         ]
 
 f_name = [
@@ -163,7 +162,9 @@ for epoch in range(training_epochs):
             if g_i == 0:    #check data
 #                plt.imshow(img[0].reshape(28,28))
                 plt.imshow(x_only.reshape(28,28))
-                plt.show()
+                #plt.ion()
+                plt.show(block=False)
+
 #                print('y_buff =',y_buff3[0])
             print('cost = %3.8f' %c)
 #    avg_cost += c / total_batch
