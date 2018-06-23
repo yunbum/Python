@@ -11,7 +11,7 @@ from layers import conv_layer, max_pool_2x2, full_layer
 DATA_DIR = "/Users/ybbaek/PycharmProjects/Datasets/MNIST-data"
 
 MINIBATCH_SIZE = 50
-STEPS = 5000
+STEPS = 50
 
 mnist = input_data.read_data_sets(DATA_DIR, one_hot=True)
 
@@ -45,17 +45,24 @@ with tf.Session() as sess:
 
     for i in range(STEPS):
         batch = mnist.train.next_batch(MINIBATCH_SIZE)
-
+        #print('batch size = ',len(batch))
+        #print('batch[0] = ', batch[0].shape)
+        #print('batch[1] = ', batch[1].shape)
+        #print('batch[0] type = ', batch[0].type)
         if i % 100 ==0:
             train_accuracy = sess.run(accuracy, feed_dict={x: batch[0], y_:batch[1],
                                                            keep_prob: 1.0})
             print("step {:4d}, training accuracy = {:.3f}".format(i, train_accuracy))
 
         sess.run(train_step, feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+        #print('batch[0] ',batch[0])
+        #print('batch[1] ',batch[1])
 
     X = mnist.test.images.reshape(10, 1000, 784)
     Y = mnist.test.labels.reshape(10, 1000, 10)
 
+    print('x = ', X.shape)
+    print('y = ', Y.shape)
     test_accuracy = np.mean(
         [sess.run(accuracy, feed_dict={x: X[i], y_: Y[i], keep_prob: 1.0}) for i in range(10)]
     )
