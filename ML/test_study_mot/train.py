@@ -24,11 +24,12 @@ def onehot_encode_label(path):
     onehot_label = onehot_label.astype(np.uint8)
     return onehot_label
 
-#Data, image check
+#Training Data, image check
 print(get_label_from_path(list_training[0]))
 image = np.array(Image.open(list_training[0]))
 print(image.shape)
 
+#Test Data check
 print(get_label_from_path(list_test[0]))
 image = np.array(Image.open(list_test[0]))
 print(image.shape)
@@ -41,7 +42,7 @@ for i in range(7):
     plt.show()
 '''
 
-#Test image array creation
+#Training image array creation
 label_name_list = []
 for path in list_training:
     label_name_list.append(get_label_from_path(path))
@@ -50,8 +51,17 @@ unique_label_names = np.unique(label_name_list)
 print(unique_label_names)
 print(onehot_encode_label(list_training[0]))
 
+#Test image array creation
+for path in list_training:
+    label_name_list.append(get_label_from_path(path))
+unique_label_names = np.unique(label_name_list)
+print(unique_label_names)
+print(onehot_encode_label(list_test[0]))
+
+
 #test pram set
 batch_size = 30
+test_size = 60
 img_h = 28
 img_w = 28
 ch_n = 1
@@ -60,12 +70,18 @@ num_files = len(label_name_list) #2100
 
 Img1D_size = 784
 
-#batch buff ini
+#training batch buff ini
 batch_image = np.zeros((batch_size, Img1D_size))
 batch_label = np.zeros((batch_size, num_class))
+#test batch buff ini
+test_image = np.zeros((test_size, Img1D_size))
+test_label = np.zeros((test_size, num_class))
 
-print(batch_image.shape)
-print(batch_label.shape)
+# data check
+print('batch image shape = ',batch_image.shape)
+print('batch label shape = ',batch_label.shape)
+print('test image shape = ', test_image.shape)
+print('test label shape = ', test_label.shape)
 
 #plt.title(batch_label[0])
 #plt.imshow(np.reshape(batch_image[0],(28,28)))
@@ -120,7 +136,11 @@ with tf.Session() as sess:
 
         sess.run(train_step, feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
 
+    X = test_image
+    Y = test_label
+    print('X shape = ', X.shape)
+    print('Y shape = ', Y.shape)
 
-
+    test_accuracy = sess.run(accuracy, feed_dict={x: X, y_: Y, keep_prob: 1.0})
 
 print("test accuracy = : {:.3f}".format(test_accuracy))
