@@ -3,6 +3,7 @@ from glob import glob
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 
 #전처리 시작
@@ -58,7 +59,6 @@ unique_label_names = np.unique(label_name_list)
 print(unique_label_names)
 print(onehot_encode_label(list_test[0]))
 
-
 #test pram set
 batch_size = 30
 test_size = 60
@@ -87,12 +87,9 @@ print('test label shape = ', test_label.shape)
 #plt.imshow(np.reshape(batch_image[0],(28,28)))
 #plt.show()
 
-
 #model
 import tensorflow as tf
 from layers import conv_layer, max_pool_2x2, full_layer
-
-STEPS = 9
 
 x = tf.placeholder(tf.float32, shape=[None, 784])
 y_= tf.placeholder(tf.float32, shape=[None,  7])
@@ -106,21 +103,27 @@ conv2_pool = max_pool_2x2(conv2)
 conv2_flat = tf.reshape(conv2_pool, [-1, 7*7*64])
 full_1 = tf.nn.relu(full_layer(conv2_flat, 1024))
 
+#hyper param
 keep_prob = tf.placeholder(tf.float32)
 full1_drop = tf.nn.dropout(full_1, keep_prob = keep_prob)
 y_conv = full_layer(full1_drop, 7)
 
+#cost function
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_conv, labels=y_))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 #Test starting...
+STEPS = 9
+
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     # 전체 epoch
     for i in range(STEPS):
+        # time check
+        start_t = time.clock()
         # 배치세트 70 <- 2100/30
         for j in range(num_files // batch_size):
             # 배치단위 생성 30ea
@@ -136,11 +139,18 @@ with tf.Session() as sess:
 
         sess.run(train_step, feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
 
+        #dt check
+        end_t = time.clock()
+        print('learning time =%3.3f' % (end_t - start_t))
+
     X = test_image
     Y = test_label
     print('X shape = ', X.shape)
     print('Y shape = ', Y.shape)
 
+    start_t = time.clock()
     test_accuracy = sess.run(accuracy, feed_dict={x: X, y_: Y, keep_prob: 1.0})
 
 print("test accuracy = : {:.3f}".format(test_accuracy))
+end_t = time.clock()
+print('\n test time =%3.3f' % (end_t - start_t))
