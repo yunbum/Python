@@ -97,10 +97,13 @@ print('test  label shape = ', test_label.shape)
 import tensorflow as tf
 from layers import conv_layer, max_pool_2x2, full_layer
 
-x = tf.placeholder(tf.float32, shape=[None, 784])
-y_= tf.placeholder(tf.float32, shape=[None,  7])
+with tf.name_scope('input'):
+    x = tf.placeholder(tf.float32, shape=[None, 784], name='x-input')
+    y_= tf.placeholder(tf.float32, shape=[None,   7], name='y-input')
 
-x_image = tf.reshape(x, [-1, 28, 28, 1])
+with tf.name_scope('input_reshape'):
+    x_image = tf.reshape(x, [-1, 28, 28, 1])
+    tf.summary.image('input', x_image, 7)
 
 conv1 = conv_layer(x_image, shape=[5, 5, 1, 32])
 conv1_pool = max_pool_2x2(conv1)
@@ -121,27 +124,34 @@ correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 ##Tensorboard
-tf.summary.scalar("accuracy", accuracy)
+
+x_entropy = tf.summary.scalar("cross_entropy", cross_entropy)
+#t_step = tf.summary.scalar("train_step", train_step)
+acc = tf.summary.scalar("accuracy", accuracy)
+
 tf.summary.histogram("conv1", conv1)
 tf.summary.histogram("conv1_pool",conv1_pool)
 tf.summary.histogram("conv2", conv2)
 tf.summary.histogram("conv2_pool", conv2_pool)
 tf.summary.histogram("full_1", full_1)
+
+'''
 tf.summary.image("conv1", conv1)
 tf.summary.image("conv1_pool", conv1_pool)
 tf.summary.image("conv2", conv2)
 tf.summary.image("conv2_pool", conv2_pool)
-
+'''
 merge = tf.summary.merge_all()
 
 ## Test starting...
-STEPS = 15
+STEPS = 30#15
 global_step = 0
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     ## Tensorboard
+    #merge = tf.summary.merge_all()
     writer = tf.summary.FileWriter(TB_SUMMARY_DIR, sess.graph)
     #writer.add_graph(sess.graph)
 
@@ -160,8 +170,10 @@ with tf.Session() as sess:
                 batch_image[n, :] = image
                 batch_label[n, :] = onehot_label
                 #print('batch_size * (j+1) = ', batch_size*(j+1))
-            sess.run(train_step, feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
+            #sess.run(train_step, feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
+            summary, _ = sess.run([merge,train_step], feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
 
+            writer.add_summary(summary, global_step=global_step)
             ## accuracy check
             if j % 10 ==0:
                 #print('n object', j+1)
@@ -169,9 +181,9 @@ with tf.Session() as sess:
                 print("step {:4d}, batch {:4d}, training accuracy = {:.3f}".format(i, j, train_accuracy))
 
         ## Tensorboard update
-        #summary = sess.run(merge)
+        #summary = sess.run(merge, feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
         #writer.add_summary(merge, global_step)
-        #global_step += 1
+        global_step += 1
 
         #sess.run(train_step, feed_dict={x: batch_image, y_: batch_label, keep_prob: 0.5})
 
