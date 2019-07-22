@@ -1,5 +1,5 @@
-# 1. Machine Learning
-Python example for deep learning..
+# Machine Learning
+7 kinds metal image classification with TF only, Keras, Pytorch..
 
-# 2. Reinforcement Learning
-cartpole, etc
+# Reinforcement Learning
+cartpole with real hardware.
